@@ -86,10 +86,11 @@ In the second, we start at a know altitude, and don't burn any fuel, which shoul
 the Starship every time. There is a second unit test that has a series of burns that
 should land Starship softly enough to survive.
 
-The main layout of classes looks like this.
+The main layout of classes (in Java) looks like this.
 
 ![Zip Mars Lander](ZipMarsLanderArch.png)
 
+It's a little different in Python, isn't it. Look inside of the python package `marslander/`
 
 and the python version for unit testing: `python3 SimulationTest.py` inside of `marslander/`
 
@@ -143,7 +144,7 @@ And remember, you brun zero kilos of fuel to increase descent speed by 100 m/s.
 You burn 100 kilos of fuel to maintain your current descent speed.
 You Burn 200 kilos of fuel to reduce you descent speed by 100 m/s.
 
-So your end goal makes the class diagram look like this:
+So your end goal makes the class diagram (for Java) look like this:
 ![Zip Mars Lander with OnBoard Computer](OnBoardComputer.png)
 
 Remember, there are astronauts onboard the Starship, so you need to make
