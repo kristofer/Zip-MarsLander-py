@@ -32,24 +32,24 @@ the speed of descent by -100 m/s.
 
 The main loop of the simulation looks like this:
 
-``` java
-        DescentEvent status;
-        int burnInterval = 0;
-        printString(gameHeader());
-        printString(getHeader());
-        while (vehicle.stillFlying()) {
-            status = vehicle.getStatus(burnInterval);
-            System.out.print(status.toString()+"\t\t");
-            vehicle.adjustForBurn(burnSource.getNextBurn());
-            if (vehicle.outOfFuel()) {
-                break;
-            }
-            burnInterval++;
-            if (burnInterval % 9 == 0) {
-                printString(getHeader());
-            }
-        }
-        printString(vehicle.checkFinalStatus());
+``` python
+        status = None
+        burn_interval = 0
+        self.print_string(self.game_header())
+        self.print_string(self.get_header())
+        while self.vehicle.still_flying():
+            status = self.vehicle.get_status(burn_interval)
+            print(f"{status}\t\t")
+            self.vehicle.adjust_for_burn(burn_source.get_next_burn(status))
+            if self.vehicle.out_of_fuel():
+                break
+            burn_interval += 1
+            if burn_interval % 9 == 0:
+                self.print_string(self.get_header())
+        self.print_string(self.vehicle.check_final_status())
+        if status is not None:
+            return status.get_status()
+        return -1
 ```
 
 Looking at the source files, you'll see an interface called `BurnStream`. 
@@ -63,26 +63,22 @@ act like a smart software system that mimics a human and lands the Starship all 
 
 And this means that the "real game" which takes user input looks like this
 
-``` java
-    public static void main(String[] args) {
-        Simulation game = new Simulation(new Vehicle(Simulation.randomaltitude()));
-        BurnStream burnSource = new BurnInputStream();
-        game.runSimulation(burnSource);
-    }
+```python
+    burnSource = BurnInputStream()
+    game = Simulation(Vehicle(5000))
+    result = game.run_simulation(burnSource)
 ```
 
 and a unit test version of the simulator might look like this:
 
-``` java
-    public void runSimulationCrash() {
-        int[] burns = {0,0,0,0,0};
-        BurnStream burnSource = new BurnDataStream(burns);
-        Simulation game = new Simulation(new Vehicle(5000));
-        game.runSimulation(burnSource);
-
-    }
+```python
+    def test_runSimulationCrash(self):
+        burns = [0, 0, 0, 0, 0]
+        burnSource = BurnDataStream(burns)
+        game = Simulation(Vehicle(5000))
+        result = game.run_simulation(burnSource)
+        self.assertEqual(result, Vehicle.CRASHED)
 ```
-
 In the first `main`, the user inputs the various burn numbers, trying to land the Starship
 very slowly.
 
@@ -93,6 +89,9 @@ should land Starship softly enough to survive.
 The main layout of classes looks like this.
 
 ![Zip Mars Lander](ZipMarsLanderArch.png)
+
+
+and the python version for unit testing: `python3 SimulationTest.py` inside of `marslander/`
 
 ## Hard Part
 
